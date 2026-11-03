@@ -7,6 +7,8 @@ public class VRGun : MonoBehaviour
     public Transform spawnPoint;
     public float fireSpeed = 20f;
 
+    public AmmoController ammoController;
+
     void Start()
     {
         
@@ -20,9 +22,13 @@ public class VRGun : MonoBehaviour
 
     public void Shoot()
     {
-        GameObject spawnedBullet = Instantiate(bullet);
-        spawnedBullet.transform.position = spawnPoint.position;
-        spawnedBullet.GetComponent<Rigidbody>().linearVelocity = spawnPoint.forward * fireSpeed;
-        Destroy(spawnedBullet, 5f);
+        if(ammoController.isCharged && ammoController.ammoLeft)
+        {
+            GameObject spawnedBullet = Instantiate(bullet);
+            spawnedBullet.transform.position = spawnPoint.position;
+            spawnedBullet.GetComponent<Rigidbody>().linearVelocity = spawnPoint.forward * fireSpeed;
+            ammoController.ReduceAmmo();
+            Destroy(spawnedBullet, 5f);
+        }
     }
 }
